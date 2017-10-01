@@ -5,20 +5,25 @@ from django.contrib.auth.models import BaseUserManager
 
 # Create your models here.
 class userPofileManager(BaseUserManager):
-    """Help django works with our custume user model."""
-    def create_user(self,email,name,password=None):
-        """Create a new user profile."""
-        if not email:
-            raise ValueError('Users must have an email address.')
-        email = self.normalize_email(email)
-        user = self.model(email=email,name=name)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
 
-    def create_super_user(self,email,name,password):
+    """Help django works with our custume user model."""
+    def create_user(self, email, name, password=None):
+            """Creates a new user profile object."""
+
+            if not email:
+                raise ValueError('Users must have an email address.')
+
+            email = self.normalize_email(email)
+            user = self.model(email=email, name=name)
+
+            user.set_password(password)
+            user.save(using=self._db)
+
+            return user
+
+    def create_superuser(self,email,name,password):
         """Creates and saves a new super user with given details"""
-        user = create_user(email,name,password)
+        user = self.create_user(email,name,password)
         user.is_superuser = True
         user.is_staff = True
         user.save(using=self._db)
@@ -35,7 +40,7 @@ class userProfile(AbstractBaseUser,PermissionsMixin):
     objects = userPofileManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELD = ['name']
+    REQUIRED_FIELDS = ['name']
 
     def get_full_name(self):
         """Used to get a users full name."""
