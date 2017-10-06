@@ -4,7 +4,7 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
 
 # Create your models here.
-class userPofileManager(BaseUserManager):
+class UserPofileManager(BaseUserManager):
 
     """Help django works with our custume user model."""
     def create_user(self, email, name, password=None):
@@ -30,14 +30,14 @@ class userPofileManager(BaseUserManager):
         return user
 
 
-class userProfile(AbstractBaseUser,PermissionsMixin):
+class UserProfile(AbstractBaseUser,PermissionsMixin):
     """Represent a "user profile"  in our system."""
 
     email = models.EmailField(max_length=255,unique=True)
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    objects = userPofileManager()
+    objects = UserPofileManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['name']
